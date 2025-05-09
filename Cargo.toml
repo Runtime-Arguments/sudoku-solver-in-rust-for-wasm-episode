@@ -1,0 +1,16 @@
+[package]
+name = "sudoku"
+version = "0.1.0"
+edition = "2024"
+
+[profile.release]
+opt-level = 3
+lto = "fat"           # Enable Link Time Optimization across crates
+codegen-units = 1     # Maximum optimization (slower build time)
+panic = "abort"       # Remove unwinding code
+strip = true          # Strip symbols from binary
+debug = false         # No debug symbols
+overflow-checks = false  # Disable integer overflow checks
+rust-flags = ["-C", "target-cpu=native"]  # Optimize for your exact CPU
+
+[dependencies]
