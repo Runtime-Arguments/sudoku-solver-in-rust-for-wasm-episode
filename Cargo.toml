@@ -11,6 +11,6 @@ panic = "abort"       # Remove unwinding code
 strip = true          # Strip symbols from binary
 debug = false         # No debug symbols
 overflow-checks = false  # Disable integer overflow checks
-rust-flags = ["-C", "target-cpu=native"]  # Optimize for your exact CPU
 
 [dependencies]
+parse_int = "0.9.0"

@@ -27,8 +27,6 @@
 - `cd` into the project directory (that is, the top-level directory containing `Cargo.toml`.)
 - `cargo run --release`
 
-##
-
 ### Changes:
 
 - These are things I didn't like about the original implementation that I changed to be truer to the type-system.
@@ -60,3 +58,15 @@
   I didn't want to clone, and I only use one "work" `Board` at a time, so I implemented a function to quickly copy
   the contents of one `Board` to another.
 - I didn't try to write all those `Board` iterators.  So many!  I **really** wanted to.
+
+### Results
+
+On my M4 Max MacBook Pro, the summary of a run was this:
+
+  Rust solved 1_000_000 iterations in 140.953099583s seconds, backtracking 3_176 times
+
+Whereas the C version printed this:
+
+  C solved 1000000 iterations in 88.454639 seconds with 3176 backtracks
+
+Plainly I have some other optimizations to do.

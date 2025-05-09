@@ -149,6 +149,7 @@ mod sudoku {
     }
 }
 
+use parse_int;
 use std::time::{Duration, Instant};
 use sudoku::{Board, Cell, Position};
 
@@ -192,7 +193,9 @@ fn main() {
     println!();
     println!(
         "Rust solved {} iterations in {:?} seconds, backtracking {} times",
-        number_of_iterations, elapsed, total_backtracks
+        parse_int::format_pretty_dec(number_of_iterations),
+        elapsed,
+        parse_int::format_pretty_dec(total_backtracks)
     );
 }
 
