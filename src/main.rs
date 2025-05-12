@@ -2,11 +2,12 @@ mod sudoku {
     // sudoku-specific machinery really deserves its own module.  I didn't want to make multiple files, though.
 
     use std::fmt;
+    use std::num::NonZeroU8;
     use std::ops::{Index, IndexMut};
 
     #[derive(Clone, Copy, Debug)]
     pub enum Cell {
-        Digit(u8),
+        Digit(NonZeroU8),
         Empty,
     }
 
@@ -32,7 +33,8 @@ mod sudoku {
 
             *self = match digit {
                 0 => Cell::Empty, // Okay, I do allow this; but using `Cell::empty()` is more explicit.
-                _ => Cell::Digit(digit),
+                // Note: I've already caught the `0` case, that makes the conversion below safe.
+                _ => unsafe { Cell::Digit(NonZeroU8::new_unchecked(digit)) },
             };
 
             Ok(())
@@ -44,7 +46,7 @@ mod sudoku {
     }
 
     impl fmt::Display for Cell {
-        // In _normal_ printing of a `Cell`, let's print a blank space instead of `None`.
+        // In _normal_ printing of a `Cell`, let's print a blank space instead of `Empty`.
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             match self {
                 Cell::Digit(digit) => write!(f, "{}", digit)?,
@@ -251,11 +253,20 @@ fn first_empty_cell(board: &Board) -> Option<Position> {
 fn is_digit_valid_here(board: &Board, digit: u8, position: Position) -> bool {
     // This is where all those iterators I didn't write would come in handy.
 
+    // TODO: I call `new_unchecked` below, so maybe this should be plain old `assert`.
+    debug_assert!(
+        0 < digit && digit <= 9,
+        "Within `is_digit_valid_here`, the supplied digit must be between 1 and 9 (inclusive)"
+    );
+
+    // Note: I don't want to convert for every single comparison, so I'll just do one conversion up front.
+    let target_digit = unsafe { NonZeroU8::new_unchecked(digit) };
+
     // Check row
     let row_to_check = position.row();
     for column in 0..9 {
         if let Cell::Digit(found_digit) = board[Position::new(row_to_check, column)] {
-            if found_digit == digit {
+            if found_digit == target_digit {
                 return false;
             }
         }
@@ -265,7 +276,7 @@ fn is_digit_valid_here(board: &Board, digit: u8, position: Position) -> bool {
     let column_to_check = position.column();
     for row in 0..9 {
         if let Cell::Digit(found_digit) = board[Position::new(row, column_to_check)] {
-            if found_digit == digit {
+            if found_digit == target_digit {
                 return false;
             }
         }
@@ -280,7 +291,7 @@ fn is_digit_valid_here(board: &Board, digit: u8, position: Position) -> bool {
     for row in first_row_to_check..last_row_to_check {
         for column in first_column_to_check..last_column_to_check {
             if let Cell::Digit(found_digit) = board[Position::new(row, column)] {
-                if found_digit == digit {
+                if found_digit == target_digit {
                     return false;
                 }
             }

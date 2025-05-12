@@ -63,10 +63,21 @@
 
 On my M4 Max MacBook Pro, the summary of a run was this:
 
-  Rust solved 1_000_000 iterations in 140.953099583s seconds, backtracking 3_176 times
+  Rust solved 1_000_000 iterations in 137.998281667s seconds, backtracking 3_176 times
 
 Whereas the C version printed this:
 
   C solved 1000000 iterations in 88.454639 seconds with 3176 backtracks
 
 Plainly I have some other optimizations to do.
+
+### Optimizations
+
+I'll run this test on each new optimization:
+
+  `RUSTFLAGS="-C target-cpu=native" cargo run --release`
+
+Here's what I got:
+
+- Rust solved 1_000_000 iterations in 137.998281667s seconds, backtracking 3_176 times (unoptimized)
+- Rust solved 1_000_000 iterations in 81.49986175s seconds, backtracking 3_176 times (use NonZeroU8 instead of u8)
