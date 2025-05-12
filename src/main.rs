@@ -154,6 +154,17 @@ use std::time::{Duration, Instant};
 use sudoku::{Board, Cell, Position};
 
 fn main() {
+    // Testing: did our NonZeroU8 optimization give us what we wanted?
+    println!();
+    println!("Memory use:");
+    println!("  sudoku::Cell is {} byte(s)", size_of::<Cell>());
+    println!("  sudoku::Position is {} byte(s)", size_of::<Position>());
+    println!(
+        "  soduko::Board is {} byte(s), but now it has `Vec`s inside it, so that's not accurate",
+        size_of::<Board>()
+    );
+    println!();
+
     #[rustfmt::skip]
     let unsolved_board = Board::from_iter([
         0, 0, 5, 0, 2, 0, 6, 0, 0,
