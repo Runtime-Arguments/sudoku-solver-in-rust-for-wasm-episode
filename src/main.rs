@@ -149,7 +149,8 @@ mod sudoku {
     }
 }
 
-use parse_int;
+use std::mem::size_of;
+use std::num::NonZeroU8;
 use std::time::{Duration, Instant};
 use sudoku::{Board, Cell, Position};
 
