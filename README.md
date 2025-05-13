@@ -20,10 +20,13 @@
 
 - installed Rust tools live in `~/.cargo/bin`. Add that to `$PATH`.
 - `rustup` is the tool you use to install everything else, and to stay up-to-date.
-  - You can install `rustup` via `brew`...
-  - ...but I used the following command: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
-  - `rustup update` installs everything you need.
-  - Now you have `cargo` (`rustup update` installed it). `cargo` is the tool that basically does everything else.
+  - Install via curl:
+    - run: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+    - `rustup update` installs everything you need.
+    - Now you have `cargo` (`rustup update` installed it). `cargo` is the tool that basically does everything else.
+  - Install via brew:
+    - run: `brew install rustup && rustup-init`
+    - Now you have `cargo` (`rustup-init` installed it). `cargo` is the tool that basically does everything else.
 - `cd` into the project directory (that is, the top-level directory containing `Cargo.toml`.)
 - `cargo run --release`
 
